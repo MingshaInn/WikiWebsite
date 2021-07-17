@@ -1,0 +1,392 @@
+<html>
+    <head>
+        <title>作物大全</title>
+        <link rel="stylesheet" href="./css/bootstrap.min.css">
+    </head>
+    <body>
+        <header>
+            <nav class="navbar navbar-light bg-light"> 
+                <a class="navbar-brand" href="./index.html">
+                    <img src="./res/img/ic_launcher.png" width="30" height="30" class="d-inline-block align-top" alt="">
+                    鸣沙客栈 Wiki
+                </a>
+                <div class="nav-item"><a class="nav-link" href="#">人物</a></div>
+                <div class="nav-item"><a class="nav-link" href="#">建筑</a></div>
+                <div class="nav-item"><a class="nav-link" href="#">菜谱</a></div>
+                <div class="nav-item"><a class="nav-link" href="./backyard.html">后院</a></div>
+                <div class="nav-item"><a class="nav-link" href="#">成就</a></div>
+                <div class="nav-item"><a class="nav-link" href="#">常见问题</a></div>
+                <div class="nav-item"><a class="nav-link" href="#download">版本号 2.1.8</a></div>
+            </nav>
+        </header>
+        <section>
+            <div class="list-group list-group-horizontal" role="tablist">
+                <a class="list-group-item list-group-item-action active text-center" href="#product" role="tab" data-toggle="list" aria-controls="product" id="list-product">作物</a>
+                <a class="list-group-item list-group-item-action text-center" href="#seed" role="tab" data-toggle="list" aria-controls="seed" id="list-seed">种子</a>
+            </div>
+            <div class="tab-content">
+                <figure id="product" class="tab-pane fade show active" role="tabpanel" aria-labelledby="list-product">
+                    <table class="table table-striped table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col" width="2%">ID</th>
+                                <th scope="col" width="6%">名称</th>
+                                <th scope="col" width="5%">位置</th>
+                                <th scope="col" width="11%">描述</th>
+                                <th scope="col" width="8%">种子</th>
+                                <th scope="col" width="3%">时令</th>
+                                <th scope="col" width="6%">应季<br>成熟时间</th>
+                                <th scope="col" width="6%">反季<br>成熟时间</th>
+                                <th scope="col" width="5%">应季<br>产量</th>
+                                <th scope="col" width="5%">反季<br>产量</th>
+                                <th scope="col" width="5%">最低<br>生产<br>等级</th>
+                                <th scope="col" width="35%">概率情况</th>
+                                <th scope="col" width="3%">作物<br>价格</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                        </tbody>
+                    </table>
+                </figure>
+                <figure id="seed" class="tab-pane fade" role="tabpanel" aria-labelledby="list-seed">
+                    <table class="table table-striped table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col" width="2%">ID</th>
+                                <th scope="col" width="6%">名称</th>
+                                <th scope="col" width="5%">位置</th>
+                                <th scope="col" width="11%">描述</th>
+                                <th scope="col" width="4%">获取<br>方式</th>
+                                <th scope="col" width="9%">可兑换性</th>
+                                <th scope="col" width="5%">最少<br>成熟时间</th>
+                                <th scope="col" width="5%">最多<br>成熟时间</th>
+                                <th scope="col" width="5%">最少<br>产量</th>
+                                <th scope="col" width="5%">最多<br>产量</th>
+                                <th scope="col" width="5%">最低<br>生产等级</th>
+                                <th scope="col" width="35%">概率情况</th>
+                                <th scope="col" width="3%">种子<br>价格</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </figure>
+            </div>
+        </section>
+        <script src="./js/jquery-3.6.0.min.js"></script>
+        <script src="./js/bootstrap.bundle.min.js"></script>
+        <script>
+            function exchange_str(id, seed, name, num) {
+                return id === "无" ? "不可兑换" : "可被"+num+"个<a href='#p"+id+"' onclick=seed_id("+seed+")>"+ name +"</a>兑换"
+            }
+
+            function seed_id(id) {
+                $("#list-seed").click()
+                setTimeout(function () {
+                    $("html,body").animate({scrollTop: $("#s"+id).offset().top}, 500)
+                },1000);
+            }
+
+            function product_id(id) {
+                $("#list-product").click()
+                setTimeout(function () {
+                    $("html,body").animate({scrollTop: $("#p"+id).offset().top}, 500)
+                },1000);
+            }
+
+            function get_product_name(json, id) {
+                let ret = ""
+                $.each(json, function(no, info) {
+                    if (id === info["ID"]) ret = info['Name'] 
+                })
+                return '<a href="#" onclick=product_id('+id+')>'+ret+'</a>'
+            }
+
+            function format_time(integer) {
+                let h = Math.floor(integer / 3600)
+                let m = Math.floor(integer % 3600 / 60)
+                let ts = integer % 60
+                s = Math.floor(ts)
+                let ms = (ts - s) * 1000
+                let ret = ""
+                if (h !== 0) ret += (h + "h")
+                if (m !== 0) ret += (m + "m")
+                if (s !== 0) ret += (s + "s")
+                if (ms !== 0) ret += (ms + "ms")
+                return ret
+            }
+
+            function probability_str(info) {
+                let location = info["Didian"]
+                let impossible_str = "无法种出"
+                let absolute_str = "必定种出"
+                let ret = ""
+                for (let i = 1; i <= 6; i++) {
+                    ret += i + " 级" + location + ": "
+                    if (i < info["Level"]) {
+                        ret += impossible_str + "<br>" 
+                        continue
+                    }
+                    if (info["Gailv"+i+"c"] === 1 && info["Gailv"+i+"x"] === 1 && info["Gailv"+i+"q"] === 1 && info["Gailv"+i+"d"] === 1) {
+                        ret += absolute_str + '<br>' 
+                        continue
+                    }
+                    ret += "春(" + (info["Gailv"+i+"c"] * 100) +"%), 夏(" + (info["Gailv"+i+"x"] * 100) +"%), 秋(" + (info["Gailv"+i+"q"] * 100) +"%), 冬(" + (info["Gailv"+i+"d"]  * 100) +"%) <br>" 
+                }
+
+                ret = ret.substring(0, ret.length-4)
+
+                return ret
+            }
+
+            function describe(location, level, d1, d2, d3) {
+                let cnt = level
+                let = ret = level + " 级"+location+": "+ d1 + "<br>"
+                if (d2 !== "无") ret += (++level) + " 级"+location+": "+ d2 + "<br>"
+                if (d3 !== "无") ret += (++level) + " 级"+location+": "+ d3 + "<br>"
+                return ret.substring(0, ret.length-4)
+            }
+
+            function probability_seed(json, id) {
+                let p = {}
+                let location = ""
+
+                $.each(json, function(no, info){
+                    if (info["SeedID"] === id) {
+                        location = info["Didian"]
+                        p[info["Name"]] = {
+                            "level": info["Level"],
+                            "first": [info["Gailv1c"],info["Gailv1x"],info["Gailv1q"],info["Gailv1d"]],
+                            "second": [info["Gailv2c"],info["Gailv2x"],info["Gailv2q"],info["Gailv2d"]],
+                            "third": [info["Gailv3c"],info["Gailv3x"],info["Gailv3q"],info["Gailv3d"]],
+                            "fourth": [info["Gailv4c"],info["Gailv4x"],info["Gailv4q"],info["Gailv4d"]],
+                            "fifth": [info["Gailv5c"],info["Gailv5x"],info["Gailv5q"],info["Gailv5d"]],
+                            "sixth": [info["Gailv6c"],info["Gailv6x"],info["Gailv6q"],info["Gailv6d"]],
+                        }
+                    }
+                })
+
+                let first = {}
+                let second = {}
+                let third = {}
+                let fourth = {}
+                let fifth = {}
+                let sixth = {}
+
+                $.each(p, function (name, probability) {
+                    first[name] = {"spring": probability["first"][0], "summer": probability["first"][1], "autumn": probability["first"][2], "winter": probability["first"][3]}
+                    second[name] = {"spring": probability["second"][0], "summer": probability["second"][1], "autumn": probability["second"][2], "winter": probability["second"][3]}
+                    third[name] = {"spring": probability["third"][0], "summer": probability["third"][1], "autumn": probability["third"][2], "winter": probability["third"][3]}
+                    fourth[name] = {"spring": probability["fourth"][0], "summer": probability["fourth"][1], "autumn": probability["fourth"][2], "winter": probability["fourth"][3]}
+                    fifth[name] = {"spring": probability["fifth"][0], "summer": probability["fifth"][1], "autumn": probability["fifth"][2], "winter": probability["fifth"][3]}
+                    sixth[name] = {"spring": probability["sixth"][0], "summer": probability["sixth"][1], "autumn": probability["sixth"][2], "winter": probability["sixth"][3]}
+                    if (probability["level"] >= 2) {
+                        first[name] = {"spring": 0, "summer": 0, "autumn": 0, "winter": 0}
+                    }
+                    if (probability["level"] >= 3) {
+                        second[name] = {"spring": 0, "summer": 0, "autumn": 0, "winter": 0}
+                    }
+                })
+
+                let l1 = "1 级"+location
+                let l2 = "2 级"+location
+                let l3 = "3 级"+location
+                let l4 = "4 级"+location
+                let l5 = "5 级"+location
+                let l6 = "6 级"+location
+
+                let c1 = ["春: ","","<br>夏: ","", "<br>秋: ","","<br>冬: ", ""]
+                let c2 = ["春: ","","<br>夏: ","", "<br>秋: ","","<br>冬: ", ""]
+                let c3 = ["春: ","","<br>夏: ","", "<br>秋: ","","<br>冬: ", ""]
+                let c4 = ["春: ","","<br>夏: ","", "<br>秋: ","","<br>冬: ", ""]
+                let c5 = ["春: ","","<br>夏: ","", "<br>秋: ","","<br>冬: ", ""]
+                let c6 = ["春: ","","<br>夏: ","", "<br>秋: ","","<br>冬: ", ""]
+
+                if (Object.keys(first).length === 1) {
+                    if (first[Object.keys(first)[0]]["spring"] === 1)
+                        c1 = [get_pid(json,Object.keys(first)[0])]
+                    else c1 = [get_pid(json,Object.keys(first)[0]), "(等级不足)"]
+                }
+                else
+                $.each(first, function(name, probability){
+                    c1[1]+=get_pid(json,name) + "(" + (probability["spring"] * 100)+ "%) "
+                    c1[3]+=get_pid(json,name) + "(" + (probability["summer"] * 100)+ "%) "
+                    c1[5]+=get_pid(json,name) + "(" + (probability["autumn"] * 100)+ "%) "
+                    c1[7]+=get_pid(json,name) + "(" + (probability["winter"] * 100)+ "%) "
+                })
+
+                if (Object.keys(second).length === 1) {
+                    if (second[Object.keys(second)[0]]["spring"] === 1)
+                        c2 = [get_pid(json,Object.keys(second)[0])]
+                    else c2 = [get_pid(json,Object.keys(second)[0]), "(等级不足)"]
+                }
+                else
+                $.each(second, function(name, probability){
+                    c2[1]+=get_pid(json,name) + "(" + (probability["spring"] * 100)+ "%) "
+                    c2[3]+=get_pid(json,name) + "(" + (probability["summer"] * 100)+ "%) "
+                    c2[5]+=get_pid(json,name) + "(" + (probability["autumn"] * 100)+ "%) "
+                    c2[7]+=get_pid(json,name) + "(" + (probability["winter"] * 100)+ "%) "
+                })
+
+                if (Object.keys(third).length === 1) {
+                    if (third[Object.keys(third)[0]]["spring"] === 1)
+                        c3 = [get_pid(json,Object.keys(third)[0])]
+                    else c3 = [get_pid(json,Object.keys(third)[0]), "(等级不足)"]
+                }
+                else
+                $.each(third, function(name, probability){
+                    c3[1]+=get_pid(json,name) + "(" + (probability["spring"] * 100)+ "%) "
+                    c3[3]+=get_pid(json,name) + "(" + (probability["summer"] * 100)+ "%) "
+                    c3[5]+=get_pid(json,name) + "(" + (probability["autumn"] * 100)+ "%) "
+                    c3[7]+=get_pid(json,name) + "(" + (probability["winter"] * 100)+ "%) "
+                })
+
+                if (Object.keys(fourth).length === 1) {
+                    if (fourth[Object.keys(fourth)[0]]["spring"] === 1)
+                        c4 = [get_pid(json,Object.keys(fourth)[0])]
+                    else c4 = [get_pid(json,Object.keys(fourth)[0]), "(等级不足)"]
+                }
+                else
+                $.each(fourth, function(name, probability){
+                    c4[1]+=get_pid(json,name) + "(" + (probability["spring"] * 100)+ "%) "
+                    c4[3]+=get_pid(json,name) + "(" + (probability["summer"] * 100)+ "%) "
+                    c4[5]+=get_pid(json,name) + "(" + (probability["autumn"] * 100)+ "%) "
+                    c4[7]+=get_pid(json,name) + "(" + (probability["winter"] * 100)+ "%) "
+                })
+
+                if (Object.keys(fifth).length === 1) {
+                    if (fifth[Object.keys(fifth)[0]]["spring"] === 1)
+                        c5 = [get_pid(json,Object.keys(fifth)[0])]
+                    else c5 = [get_pid(json,Object.keys(fifth)[0]), "(等级不足)"]
+                }
+                else
+                $.each(fifth, function(name, probability){
+                    c5[1]+=get_pid(json,name) + "(" + (probability["spring"] * 100)+ "%) "
+                    c5[3]+=get_pid(json,name) + "(" + (probability["summer"] * 100)+ "%) "
+                    c5[5]+=get_pid(json,name) + "(" + (probability["autumn"] * 100)+ "%) "
+                    c5[7]+=get_pid(json,name) + "(" + (probability["winter"] * 100)+ "%) "
+                })
+
+                if (Object.keys(sixth).length === 1) {
+                    if (sixth[Object.keys(sixth)[0]]["spring"] === 1)
+                        c6 = [get_pid(json,Object.keys(sixth)[0])]
+                    else c6 = [get_pid(json,Object.keys(sixth)[0]), "(等级不足)"]
+                }
+                else
+                $.each(sixth, function(name, probability){
+                    c6[1]+=get_pid(json,name) + "(" + (probability["spring"] * 100)+ "%) "
+                    c6[3]+=get_pid(json,name) + "(" + (probability["summer"] * 100)+ "%) "
+                    c6[5]+=get_pid(json,name) + "(" + (probability["autumn"] * 100)+ "%) "
+                    c6[7]+=get_pid(json,name) + "(" + (probability["winter"] * 100)+ "%) "
+                })
+
+                let content = ["", "", "", "", "", ""]
+                $.each(c1, function(number, c){
+                    content[0] += c
+                })
+
+                $.each(c2, function(number, c){
+                    content[1] += c
+                })
+
+                $.each(c3, function(number, c){
+                    content[2] += c
+                })
+
+                $.each(c4, function(number, c){
+                    content[3] += c
+                })
+
+                $.each(c5, function(number, c){
+                    content[4] += c
+                })
+
+                $.each(c6, function(number, c){
+                    content[5] += c
+                })
+
+                let head = '<div class="accordion" id="probability'+id+'">'
+                let b1 = '<div class="card"><div class="card-header" id="l'+id+'_1"><button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse"'+
+                    'data-target="#c'+id+'_1" aria-expanded="true" aria-controls="c'+id+'_1">'+l1+'</button></div><div id="c'+id+'_1" class="collapse" aria-labelledby="l'+id+'_1" data-parent="#probability'+id+'"><div class="card-body">'+
+                    content[0] + '</div></div></div>'
+             
+                let b2 = '<div class="card"><div class="card-header" id="l'+id+'_2"><button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse"'+
+                    'data-target="#c'+id+'_2" aria-expanded="true" aria-controls="c'+id+'_2">'+l2+'</button></div><div id="c'+id+'_2" class="collapse" aria-labelledby="l'+id+'_2" data-parent="#probability'+id+'"><div class="card-body">'+
+                    content[1] + '</div></div></div>'
+                
+                let b3 = '<div class="card"><div class="card-header" id="l'+id+'_3"><button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse"'+
+                    'data-target="#c'+id+'_3" aria-expanded="true" aria-controls="c'+id+'_3">'+l3+'</button></div><div id="c'+id+'_3" class="collapse" aria-labelledby="l'+id+'_3" data-parent="#probability'+id+'"><div class="card-body">'+
+                    content[2] + '</div></div></div>'
+
+                let b4 = '<div class="card"><div class="card-header" id="l'+id+'_4"><button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse"'+
+                    'data-target="#c'+id+'_4" aria-expanded="true" aria-controls="c'+id+'_4">'+l4+'</button></div><div id="c'+id+'_4" class="collapse" aria-labelledby="l'+id+'_4" data-parent="#probability'+id+'"><div class="card-body">'+
+                    content[3] + '</div></div></div>'
+
+                let b5 = '<div class="card"><div class="card-header" id="l'+id+'_5"><button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse"'+
+                    'data-target="#c'+id+'_5" aria-expanded="true" aria-controls="c'+id+'_5">'+l5+'</button></div><div id="c'+id+'_5" class="collapse" aria-labelledby="l'+id+'_5" data-parent="#probability'+id+'"><div class="card-body">'+
+                    content[4] + '</div></div></div>'
+
+                let b6 = '<div class="card"><div class="card-header" id="l'+id+'_6"><button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse"'+
+                    'data-target="#c'+id+'_6" aria-expanded="true" aria-controls="c'+id+'_6">'+l6+'</button></div><div id="c'+id+'_6" class="collapse" aria-labelledby="l'+id+'_6" data-parent="#probability'+id+'"><div class="card-body">'+
+                    content[5] + '</div></div></div>'
+                
+                let foot = '</div>'
+                
+                let ret = head+b1+b2+b3+b4+b5+b6+foot
+
+                return ret
+            }
+
+            function get_pid(json, name) {
+                let id = 0
+                $.each(json, function(number, info){
+                    if (info["Name"] === name)
+                        id = info["ID"]
+                    return
+                }) 
+                return '<a href="#" onclick=product_id('+id+')>'+name+'</a>'
+            }
+
+            $.getJSON("./res/db/products.json", function (data) {
+                let tempArr = []
+
+                $.each(data["json"], function(no, info){
+                    $("<tr><th scope='row' id='p"+info["ID"]+"'>" + info["ID"] + "</th>"
+                    +"<td>" + info["Name"] + "</td>"
+                    +"<td>" + info["Didian"] + "</td>"
+                    +"<td>" + info["Miaoshu1"] + "</td>"
+                    +"<td><a href='#' onclick=seed_id("+info["SeedID"]+")>" + info["Zhongzi"] + "</a></td>"
+                    +"<td>" + info["Jijie"] + "</td>"
+                    +"<td>" + format_time(info["Time"]) + "</td>"
+                    +"<td>" + format_time(info["FanjiTime"]) + "</td>"
+                    +"<td>" + info["Chanliang"] + "</td>"
+                    +"<td>" + info["FanjiCL"] + "</td>"
+                    +"<td>" + info["Level"] + "</td>"
+                    +"<td>" + probability_str(info) + "</td>"
+                    +"<td>" + info["Shouchujia"] + "</td>"
+                    +"</tr>").appendTo($("#product table tbody"))
+
+                    if (!tempArr.includes(info["SeedID"]))
+                    $("<tr><th scope='row' id='s"+info["SeedID"]+"'>" + info["SeedID"] + "</th>"
+                    +"<td>" + info["Zhongzi"] + "</td>"
+                    +"<td>" + info["Didian"] + "</td>"
+                    +"<td>" + describe(info["Didian"], info["Level"], info["Miaoshu2"], info["Miaoshu3"], info["Miaoshu4"]) + "</td>"
+                    +"<td>" + info["Huode"] + "</td>"
+                    +"<td>" + exchange_str(info["Duihuan"], info["SeedID"], get_product_name(data["json"], info["Duihuan"]), info["DuihuanNum"]) + "</td>"
+                    +"<td>" + format_time(info["XiangqingTimeX"] === "无" ? info["Time"] : info["XiangqingTimeX"]) + "</td>"
+                    +"<td>" + format_time(info["XiangqingTimeS"] === "无" ? info["FanjiTime"] : info["XiangqingTimeS"]) + "</td>"
+                    +"<td>" + info["FanjiCL"] + "</td>"
+                    +"<td>" + info["Chanliang"] + "</td>"
+                    +"<td>" + info["Level"] + "</td>"
+                    +"<td>" + probability_seed(data["json"], info["SeedID"]) + "</td>"
+                    +"<td>" + info["Zhongzijia"] + "</td>"
+                    +"</tr>").appendTo($("#seed table tbody"))
+
+                    tempArr.push(info["SeedID"])
+                })
+                tempArr = null
+            })
+        </script>
+    </body>
+</html>
