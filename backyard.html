@@ -312,7 +312,7 @@
                     l2 = '<td>2</td>'+ product_with_seed(raw, row['SeedID'], 2)
                 }
 
-                if (row["Level"] == 2) {
+                if (row["Level"] >= 2) {
                     l1 = '<td>1</td><td>'+ row["Name"] + ": " + 0 +'</td><td>' + row["Name"] + ": " + 0 + '</td><td colspan="4">'+ row["Name"] + ': 等级不足</td>'
                 } else {
                     l1 = '<td>1</td>'+ product_with_seed(raw, row['SeedID'], 1)
