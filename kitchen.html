@@ -1,7 +1,12 @@
 <html>
     <head>
-        <title>鸣沙客栈 Wiki</title>
+        <title>鸣沙客栈 Wiki | 后厨</title>
+        <link href="https://cdn.jsdelivr.net/gh/akottr/dragtable@master/dragtable.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+        <link href="https://unpkg.com/jquery-resizable-columns@0.2.3/dist/jquery.resizableColumns.css" rel="stylesheet" crossorigin="anonymous">
+        <link href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css" rel="stylesheet" crossorigin="anonymous">
+        <link href="https://unpkg.com/bootstrap-table@1.18.3/dist/extensions/sticky-header/bootstrap-table-sticky-header.css" rel="stylesheet" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://unpkg.com/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" crossorigin="anonymous">
     </head>
     <body>
         <header>
@@ -20,9 +25,50 @@
             </nav>
         </header>
         <section>
-        
+            <div class="tab-content container">
+                <figure id="product" class="tab-pane fade show active bootstrap-table bootstrap4" role="tabpanel" aria-labelledby="list-product">
+                    <table id="ptable"
+                    class="table"
+                    data-toggle="table"
+                    data-show-columns-toggle-all="true"
+                    data-show-columns="true"
+                    data-show-fullscreen="true"
+                    data-search="true"
+                    data-resizable="true"
+                    data-sticky-header="true"
+                    data-response-handler="product_handler" 
+                    data-url="res/db/products.json"
+                    data-reorderable-columns="true"
+                    min-width="400em">
+                        <thead class="thead-light sticky-header">
+                            <tr>
+                                <th data-sortable="true" data-switchable="false" data-field="ID" data-title="ID"></th>
+                                <th data-sortable="true" data-field="Name" data-title="名称"></th>
+                                <th data-sortable="true" data-field="Didian" data-title="位置"></th>
+                                <th data-sortable="true" data-field="Miaoshu1" data-title="描述"></th>
+                                <th data-sortable="true" data-field="a_seed" data-title="种子"></th>
+                                <th data-sortable="true" data-field="Jijie" data-title="时令"></th>
+                                <th data-sortable="true" data-sorter="time_sort" data-field="on-season-time" data-title="应季成熟时间"></th>
+                                <th data-sortable="true" data-sorter="time_sort" data-field="off-season-time" data-title="反季成熟时间"></th>
+                                <th data-sortable="true" data-field="Chanliang" data-title="应季产量"></th>
+                                <th data-sortable="true" data-field="FanjiCL" data-title="反季产量"></th>
+                                <th data-sortable="true" data-field="Level" data-title="最低生产等级"></th>
+                                <th data-field="probability" data-title="概率情况"></th>
+                                <th data-sortable="true" data-field="Shouchujia" data-title="作物价格"></th>
+                            </tr>
+                        </thead>
+                    </table>
+                </figure>
+            </div>
         </section>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/jqueryui@1.11.1/jquery-ui.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/akottr/dragtable@master/jquery.dragtable.js"></script>
+        <script src="https://unpkg.com/jquery-resizable-columns@0.2.3/dist/jquery.resizableColumns.min.js" type="text/javascript" crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js" type="text/javascript" crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/extensions/resizable/bootstrap-table-resizable.min.js" type="text/javascript" crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/extensions/sticky-header/bootstrap-table-sticky-header.min.js" crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/extensions/reorder-columns/bootstrap-table-reorder-columns.min.js" crossorigin="anonymous"></script>
     </body>
 </html>
