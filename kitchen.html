@@ -27,12 +27,14 @@
             <div class="container">
                 <figure class="bootstrap-table bootstrap4">
                     <table id="rtable"
-                    class="table text-center align-middle"
+                    class="table text-center"
                     data-toggle="table"
                     data-show-columns-toggle-all="true"
                     data-show-columns="true"
                     data-show-fullscreen="true"
                     data-search="true"
+                    data-detail-view="true"
+                    data-detail-formatter="subtable"
                     data-resizable="true"
                     data-sticky-header="true"
                     data-response-handler="recipe_handler" 
@@ -40,31 +42,31 @@
                     min-width="400em">
                         <thead class="thead-light sticky-header">
                             <tr>
-                                <th data-sortable="true" data-switchable="false" data-field="ID" data-title="ID" rowspan="3"></th>
-                                <th data-sortable="true" data-field="Name" data-title="名称" rowspan="3"></th>
-                                <th data-sortable="true" data-field="Fenlei" data-title="分类" rowspan="3"></th>
-                                <th data-sortable="true" data-field="Shangdian" data-title="商店介绍" rowspan="3"></th>
-                                <th data-sortable="true" data-field="Miaoshu" data-title="菜谱介绍" rowspan="3"></th>
-                                <th data-sortable="true" data-field="Shipu" data-title="菜谱" rowspan="3"></th>
-                                <th data-sortable="true" data-field="meterials" data-title="使用食材" colspan="6"></th>
-                                <th data-sortable="true" data-field="tool" data-title="烹饪方式" rowspan="3"></th>
-                                <th data-sortable="true" data-field="taste" data-title="口味" rowspan="3"></th>
-                                <th data-sortable="true" data-field="Huode" data-title="获得方式" rowspan="3"></th>
-                                <th data-sortable="true" data-field="recipePrice" data-title="食谱价格" rowspan="3"></th>
-                                <th data-sortable="true" data-field="SellPrice" data-title="售出价格" rowspan="3"></th> 
+                                <th class="align-middle" data-sortable="true" data-switchable="false" data-field="ID" data-title="ID" rowspan="3"></th>
+                                <th class="align-middle" data-sortable="true" data-field="Name" data-title="名称" rowspan="3"></th>
+                                <th class="align-middle" data-sortable="true" data-field="Fenlei" data-title="分类" rowspan="3"></th>
+                                <th class="align-middle" data-sortable="true" data-field="Shangdian" data-title="商店介绍" rowspan="3"></th>
+                                <th class="align-middle" data-sortable="true" data-field="Miaoshu" data-title="菜谱介绍" rowspan="3"></th>
+                                <th class="align-middle" data-sortable="true" data-field="Shipu" data-title="菜谱" rowspan="3"></th>
+                                <th class="align-middle" data-sortable="true" data-field="meterials" data-title="使用食材" colspan="6"></th>
+                                <th class="align-middle" data-sortable="true" data-field="tool" data-title="烹饪方式" rowspan="3"></th>
+                                <th class="align-middle" data-sortable="true" data-field="taste" data-title="口味" rowspan="3"></th>
+                                <th class="align-middle" data-sortable="true" data-field="Huode" data-title="获得方式" rowspan="3"></th>
+                                <th class="align-middle" data-sortable="true" data-field="recipePrice" data-title="食谱价格" rowspan="3"></th>
+                                <th class="align-middle" data-sortable="true" data-field="SellPrice" data-title="基础售出价格" rowspan="3"></th> 
                             </tr>
                             <tr>
-                                <th data-sortable="true" data-field="material1" data-title="食材 1" colspan="2"></th>
-                                <th data-sortable="true" data-field="material2" data-title="食材 2" colspan="2"></th>
-                                <th data-sortable="true" data-field="material3" data-title="食材 3" colspan="2"></th>
+                                <th class="align-middle" data-sortable="true" data-field="material1" data-title="食材 1" colspan="2"></th>
+                                <th class="align-middle" data-sortable="true" data-field="material2" data-title="食材 2" colspan="2"></th>
+                                <th class="align-middle" data-sortable="true" data-field="material3" data-title="食材 3" colspan="2"></th>
                             </tr>
                             <tr>
-                                <th data-sortable="true" data-field="mname1" data-title="名称"></th>
-                                <th data-sortable="true" data-field="mquantity1" data-title="数量"></th>
-                                <th data-sortable="true" data-field="mname2" data-title="名称"></th>
-                                <th data-sortable="true" data-field="mquantity2" data-title="数量"></th>
-                                <th data-sortable="true" data-field="mname3" data-title="名称"></th>
-                                <th data-sortable="true" data-field="mquantity3" data-title="数量"></th>
+                                <th class="align-middle" data-sortable="true" data-field="mname1" data-title="名称"></th>
+                                <th class="align-middle" data-sortable="true" data-field="mquantity1" data-title="数量"></th>
+                                <th class="align-middle" data-sortable="true" data-field="mname2" data-title="名称"></th>
+                                <th class="align-middle" data-sortable="true" data-field="mquantity2" data-title="数量"></th>
+                                <th class="align-middle" data-sortable="true" data-field="mname3" data-title="名称"></th>
+                                <th class="align-middle" data-sortable="true" data-field="mquantity3" data-title="数量"></th>
                             </tr>
                         </thead>
                     </table>
@@ -106,6 +108,39 @@
                     }
                 })
                 return ret
+            }
+
+            function subtable(index, row) {
+                let p = row["SellPrice"]
+                return '<table class="table">'
+                        + '<thead class="thead-light text-center">'
+                        + '<tr>'
+                            + '<th class="align-middle text-center">Lv.0 丁</th>'
+                            + '<th class="align-middle text-center">Lv.1 上丁</th>'
+                            + '<th class="align-middle text-center">Lv.2 丙</th>'
+                            + '<th class="align-middle text-center">Lv.3 上丙</th>'
+                            + '<th class="align-middle text-center">Lv.4 乙</th>'
+                            + '<th class="align-middle text-center">Lv.5 上乙</th>'
+                            + '<th class="align-middle text-center">Lv.6 甲</th>'
+                            + '<th class="align-middle text-center">Lv.7 上甲</th>'
+                            + '<th class="align-middle text-center">Lv.8 天地</th>'
+                            + '<th class="align-middle text-center">Lv.9 天人</th>'
+                            + '<th class="align-middle text-center">Lv.10 天</th>'
+                        + '</tr>'
+                        + '</thead><tbody>'
+                        + '<td class="text-center font-weight-bold align-middle">' + Math.round(p) + '</td>'
+                        + '<td class="text-center align-middle">' + Math.round(p * 1.1) + '</td>'
+                        + '<td class="text-center align-middle">' + Math.round(p * 1.2) + '</td>'
+                        + '<td class="text-center align-middle">' + Math.round(p * 1.3) + '</td>'
+                        + '<td class="text-center align-middle">' + Math.round(p * 1.4) + '</td>'
+                        + '<td class="text-center align-middle">' + Math.round(p * 1.5) + '</td>'
+                        + '<td class="text-center align-middle">' + Math.round(p * 1.6) + '</td>'
+                        + '<td class="text-center align-middle">' + Math.round(p * 1.7) + '</td>'
+                        + '<td class="text-center align-middle">' + Math.round(p * 1.8) + '</td>'
+                        + '<td class="text-center align-middle">' + Math.round(p * 1.9) + '</td>'
+                        + '<td class="text-center font-weight-bold align-middle">' + Math.round(p * 2) + '</td>'
+                        +'</tbody>'
+                        + '</table>'
             }
 
             function recipe_handler(data) {
