@@ -1,7 +1,6 @@
 <html>
     <head>
         <title>鸣沙客栈 Wiki | 后厨</title>
-        <link href="https://cdn.jsdelivr.net/gh/akottr/dragtable@master/dragtable.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
         <link href="https://unpkg.com/jquery-resizable-columns@0.2.3/dist/jquery.resizableColumns.css" rel="stylesheet" crossorigin="anonymous">
         <link href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css" rel="stylesheet" crossorigin="anonymous">
@@ -17,7 +16,7 @@
                 </a>
                 <div class="nav-item"><a class="nav-link text-dark" href="#">人物</a></div>
                 <div class="nav-item"><a class="nav-link text-dark" href="#">建筑</a></div>
-                <div class="nav-item"><a class="nav-link text-dark" href="./kitchen.html">菜谱</a></div>
+                <div class="nav-item"><a class="nav-link text-dark font-weight-bold" href="./kitchen.html">后厨</a></div>
                 <div class="nav-item"><a class="nav-link text-dark" href="./backyard.html">后院</a></div>
                 <div class="nav-item"><a class="nav-link text-dark" href="#">成就</a></div>
                 <div class="nav-item"><a class="nav-link text-dark" href="#">常见问题</a></div>
@@ -25,10 +24,10 @@
             </nav>
         </header>
         <section>
-            <div class="tab-content container">
-                <figure id="product" class="tab-pane fade show active bootstrap-table bootstrap4" role="tabpanel" aria-labelledby="list-product">
-                    <table id="ptable"
-                    class="table"
+            <div class="container">
+                <figure class="bootstrap-table bootstrap4">
+                    <table id="rtable"
+                    class="table text-center align-middle"
                     data-toggle="table"
                     data-show-columns-toggle-all="true"
                     data-show-columns="true"
@@ -36,25 +35,36 @@
                     data-search="true"
                     data-resizable="true"
                     data-sticky-header="true"
-                    data-response-handler="product_handler" 
-                    data-url="res/db/products.json"
-                    data-reorderable-columns="true"
+                    data-response-handler="recipe_handler" 
+                    data-url="res/db/recipes.json"
                     min-width="400em">
                         <thead class="thead-light sticky-header">
                             <tr>
-                                <th data-sortable="true" data-switchable="false" data-field="ID" data-title="ID"></th>
-                                <th data-sortable="true" data-field="Name" data-title="名称"></th>
-                                <th data-sortable="true" data-field="Didian" data-title="位置"></th>
-                                <th data-sortable="true" data-field="Miaoshu1" data-title="描述"></th>
-                                <th data-sortable="true" data-field="a_seed" data-title="种子"></th>
-                                <th data-sortable="true" data-field="Jijie" data-title="时令"></th>
-                                <th data-sortable="true" data-sorter="time_sort" data-field="on-season-time" data-title="应季成熟时间"></th>
-                                <th data-sortable="true" data-sorter="time_sort" data-field="off-season-time" data-title="反季成熟时间"></th>
-                                <th data-sortable="true" data-field="Chanliang" data-title="应季产量"></th>
-                                <th data-sortable="true" data-field="FanjiCL" data-title="反季产量"></th>
-                                <th data-sortable="true" data-field="Level" data-title="最低生产等级"></th>
-                                <th data-field="probability" data-title="概率情况"></th>
-                                <th data-sortable="true" data-field="Shouchujia" data-title="作物价格"></th>
+                                <th data-sortable="true" data-switchable="false" data-field="ID" data-title="ID" rowspan="3"></th>
+                                <th data-sortable="true" data-field="Name" data-title="名称" rowspan="3"></th>
+                                <th data-sortable="true" data-field="Fenlei" data-title="分类" rowspan="3"></th>
+                                <th data-sortable="true" data-field="Shangdian" data-title="商店介绍" rowspan="3"></th>
+                                <th data-sortable="true" data-field="Miaoshu" data-title="菜谱介绍" rowspan="3"></th>
+                                <th data-sortable="true" data-field="Shipu" data-title="菜谱" rowspan="3"></th>
+                                <th data-sortable="true" data-field="meterials" data-title="使用食材" colspan="6"></th>
+                                <th data-sortable="true" data-field="tool" data-title="烹饪方式" rowspan="3"></th>
+                                <th data-sortable="true" data-field="taste" data-title="口味" rowspan="3"></th>
+                                <th data-sortable="true" data-field="Huode" data-title="获得方式" rowspan="3"></th>
+                                <th data-sortable="true" data-field="recipePrice" data-title="食谱价格" rowspan="3"></th>
+                                <th data-sortable="true" data-field="SellPrice" data-title="售出价格" rowspan="3"></th> 
+                            </tr>
+                            <tr>
+                                <th data-sortable="true" data-field="material1" data-title="食材 1" colspan="2"></th>
+                                <th data-sortable="true" data-field="material2" data-title="食材 2" colspan="2"></th>
+                                <th data-sortable="true" data-field="material3" data-title="食材 3" colspan="2"></th>
+                            </tr>
+                            <tr>
+                                <th data-sortable="true" data-field="mname1" data-title="名称"></th>
+                                <th data-sortable="true" data-field="mquantity1" data-title="数量"></th>
+                                <th data-sortable="true" data-field="mname2" data-title="名称"></th>
+                                <th data-sortable="true" data-field="mquantity2" data-title="数量"></th>
+                                <th data-sortable="true" data-field="mname3" data-title="名称"></th>
+                                <th data-sortable="true" data-field="mquantity3" data-title="数量"></th>
                             </tr>
                         </thead>
                     </table>
@@ -64,11 +74,66 @@
         <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/jqueryui@1.11.1/jquery-ui.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/gh/akottr/dragtable@master/jquery.dragtable.js"></script>
         <script src="https://unpkg.com/jquery-resizable-columns@0.2.3/dist/jquery.resizableColumns.min.js" type="text/javascript" crossorigin="anonymous"></script>
         <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js" type="text/javascript" crossorigin="anonymous"></script>
         <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/extensions/resizable/bootstrap-table-resizable.min.js" type="text/javascript" crossorigin="anonymous"></script>
         <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/extensions/sticky-header/bootstrap-table-sticky-header.min.js" crossorigin="anonymous"></script>
-        <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/extensions/reorder-columns/bootstrap-table-reorder-columns.min.js" crossorigin="anonymous"></script>
+        <script>           
+            const tastes = {
+                '0' : "酸",
+                '1' : "甘",
+                '2' : "苦",
+                '3' : '辛',
+                '4' : '咸'
+            }
+
+            const tools = {
+                '6001' : "徒手",
+                '6002' : "炒锅",
+                '6003' : "圆锅",
+                '6004' : "烤炉",
+                '6005' : "榨汁",
+                '6006' : "冰格"
+            }
+
+            function find_name(json, id) {
+                if (id === 0) return "-"
+                let ret = ""
+                $.each(json, function(index, info) {
+                    if (info["ID"] === id){
+                        ret = info["Name"]
+                        return
+                    }
+                })
+                return ret
+            }
+
+            function recipe_handler(data) {
+                let recipes = JSON.parse(JSON.stringify(data))["json"]
+                $.ajax({
+				    url: "res/db/products.json",
+				    type: "GET",
+				    dataType: "json", 
+                    async:false,
+				    success: function(data) {
+                        let material = data["json"]
+
+                        $.each(recipes, function(index, info) {
+                            info["recipePrice"] = info["ShipuJia"] === '无' ? '-' : info["ShipuJia"]
+                            info["tool"] = tools[info["Pengren"]]
+                            info["taste"] = tastes[info["Kouwei"]]
+                            info["mname1"] = find_name(material, info["Shicai1"])
+                            info["mquantity1"] = info["Num1"]
+                            info["mname2"] = find_name(material, info["Shicai2"])
+                            info["mquantity2"] = info["Num2"]
+                            info["mname3"] = find_name(material, info["Shicai3"])
+                            info["mquantity3"] = info["Num3"] === 0 ? "-" : info["Num3"]
+                        })
+                        return material
+				    }
+			    })
+                return recipes
+            }
+        </script>
     </body>
 </html>
